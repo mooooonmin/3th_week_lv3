@@ -39,7 +39,8 @@ public class User {
         this.role = requestDto.getRole();
     }
 
-    public void encodePassword(PasswordEncoder passwordEncoder){
+    // TODO 꼭 여기다 만들어줘야하나?
+    public void encodedPassword(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(password);
     }
 

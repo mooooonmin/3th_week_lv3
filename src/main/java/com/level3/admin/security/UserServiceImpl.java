@@ -10,8 +10,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional(readOnly = true) // 값을 변경하지는 않고 읽기만 하기
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -48,5 +52,21 @@ public class UserServiceImpl implements UserService {
 
         return user.getUserId();
     }
+
+    @Override
+    public String login(Map<String, String> members) {
+
+        User user = userRepository.findByEmail(members.get("email"))
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 Email 입니다."));
+
+        String password = members.get("password");
+        if (!user.checkPassword(passwordEncoder, password)) {
+            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+        }
+
+        List<String> roles = new ArrayList<>();
+        roles.add(user.getRole().name());
+
+        return jwtTokenProvider.createToken(user.getUserId(), roles);
 }
 

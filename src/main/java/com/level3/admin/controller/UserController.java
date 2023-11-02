@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RequiredArgsConstructor
 @RequestMapping("/api")
 @RestController
@@ -20,5 +22,10 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public Long join(@Valid @RequestBody UserRequestDto requestDto) throws Exception {
         return userService.signUp(requestDto);
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody Map<String, String> user) {
+        return userService.login(user);
     }
 }
