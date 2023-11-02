@@ -54,12 +54,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String login(Map<String, String> members) {
+    public String login(Map<String, String> users) {
 
-        User user = userRepository.findByEmail(members.get("email"))
+        User user = userRepository.findByEmail(users.get("email"))
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 Email 입니다."));
 
-        String password = members.get("password");
+        String password = users.get("password");
         if (!user.checkPassword(passwordEncoder, password)) {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
@@ -69,4 +69,5 @@ public class UserServiceImpl implements UserService {
 
         return jwtTokenProvider.createToken(user.getUserId(), roles);
 }
+
 

@@ -1,22 +1,36 @@
 package com.level3.admin.config;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
-@RequiredArgsConstructor
+@EnableWebSecurity
 public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(
-                (authz) -> authz.anyRequest().authenticated()).httpBasic(Customizer.withDefaults());
+        http
+                /*.csrf().disable()
+                .formLogin().disable()*/
+                .httpBasic(withDefaults())
+                .sessionManagement((session) -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .authorizeRequests((authz) -> authz
+                        .antMatchers("/user/login", "/user/join").permitAll()
+                        .antMatchers("/user").hasRole("USER")
+                        .anyRequest().authenticated()
+                )
+                .cors(withDefaults());
+
         return http.build();
     }
 
@@ -25,8 +39,7 @@ public class SecurityConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    // 보안에 예외 URL -> 실제로 여기서는 안쓰임, 근데 혹시몰라서 같이 써봄
-    private static final String[] AUTH_WHITLIST = {
+    private static final String[] AUTH_WHITELIST = {
             "/v2/api-docs",
             "/v3/api-docs/**",
             "/configuration/ui",
