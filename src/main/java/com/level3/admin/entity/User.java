@@ -40,8 +40,19 @@ public class User {
     }
 
     // TODO 꼭 여기다 만들어줘야하나?
-    public void encodedPassword(PasswordEncoder passwordEncoder) {
+    public void encodePassword(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(password);
     }
+
+    // 비밀번호 일치 여부 확인 메서드
+    public boolean checkPassword(PasswordEncoder passwordEncoder, String rawPassword) {
+        return passwordEncoder.matches(rawPassword, this.password);
+    }
+
+    // 사용자 권한 부여 메서드
+    public void addUserAuthority(UserRoleEnum role) {
+        this.role = role;
+    }
+
 
 }

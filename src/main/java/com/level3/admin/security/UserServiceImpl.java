@@ -3,6 +3,7 @@ package com.level3.admin.security;
 
 import com.level3.admin.dto.UserRequestDto;
 import com.level3.admin.entity.User;
+import com.level3.admin.jwt.JwtTokenProvider;
 import com.level3.admin.repository.UserRepository;
 import com.level3.admin.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +16,12 @@ import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
-@Transactional(readOnly = true) // 값을 변경하지는 않고 읽기만 하기
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
     @Override
@@ -47,7 +48,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encodedPassword);
 
         // 사용자 권한 설정 및 저장
-        user.addUserAuthority();
+        user.addUserAuthority(requestDto.getRole());
         userRepository.save(user);
 
         return user.getUserId();
@@ -56,9 +57,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public String login(Map<String, String> users) {
 
-        User user = userRepository.findByEmail(users.get("email"))
-                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 Email 입니다."));
+        User user = userRepository.findByEmail(users.get("email")).orElseThrow(() -> new RuntimeException("가입되지 않은 이메일 입니다."));
 
+       /* User user = userRepository.findByEmail(users.get("email"))
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 Email 입니다."));
+*/
         String password = users.get("password");
         if (!user.checkPassword(passwordEncoder, password)) {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
@@ -67,7 +70,8 @@ public class UserServiceImpl implements UserService {
         List<String> roles = new ArrayList<>();
         roles.add(user.getRole().name());
 
-        return jwtTokenProvider.createToken(user.getUserId(), roles);
+        return jwtTokenProvider.createToken(String.valueOf(user.getUserId()), roles);
+    }
 }
 
 
