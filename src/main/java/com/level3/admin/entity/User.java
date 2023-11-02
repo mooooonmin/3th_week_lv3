@@ -2,15 +2,16 @@ package com.level3.admin.entity;
 
 import com.level3.admin.dto.UserRequestDto;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 @Setter
 @Table(name = "user")
+@Builder
 @Entity
-@NoArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
     @Id
@@ -36,7 +37,10 @@ public class User {
         this.password = requestDto.getPassword();
         this.department = requestDto.getDepartment();
         this.role = requestDto.getRole();
+    }
 
+    public void encodePassword(PasswordEncoder passwordEncoder){
+        this.password = passwordEncoder.encode(password);
     }
 
 }
