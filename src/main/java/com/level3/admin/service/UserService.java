@@ -15,10 +15,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
 
+    // 회원가입만 처리함 -> 로그인 관련은 다른 클래스에 구현
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-    private final JwtUtil jwtUtil;
 
     private final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
