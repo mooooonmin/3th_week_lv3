@@ -1,6 +1,6 @@
 package com.level3.admin.service;
 
-import com.level3.admin.dto.UserSignupRequestDto;
+import com.level3.admin.dto.signup.UserSignupRequestDto;
 import com.level3.admin.entity.User;
 import com.level3.admin.entity.UserRoleEnum;
 import com.level3.admin.jwt.JwtUtil;

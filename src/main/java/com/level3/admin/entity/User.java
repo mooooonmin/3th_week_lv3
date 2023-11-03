@@ -1,6 +1,6 @@
 package com.level3.admin.entity;
 
-import com.level3.admin.dto.UserSignupRequestDto;
+import com.level3.admin.dto.signup.UserSignupRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,17 +1,14 @@
 package com.level3.admin.controller;
 
-import com.level3.admin.dto.UserSignupRequestDto;
-import com.level3.admin.dto.UserSignupResponseDto;
+import com.level3.admin.dto.signup.UserSignupRequestDto;
+import com.level3.admin.dto.signup.UserSignupResponseDto;
 import com.level3.admin.entity.User;
-import com.level3.admin.repository.UserRepository;
 import com.level3.admin.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
@@ -26,8 +23,8 @@ public class UserController {
         UserSignupResponseDto responseDto = new UserSignupResponseDto(
                 user.getUsername(),
                 user.getEmail(),
-                user.getRole().toString(),
-                user.getDepartment().toString(),
+                user.getRole(),
+                user.getDepartment(),
                 "성공적으로 가입되셨습니다"
         );
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);

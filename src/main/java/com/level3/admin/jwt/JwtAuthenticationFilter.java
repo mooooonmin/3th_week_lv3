@@ -1,7 +1,7 @@
 package com.level3.admin.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.level3.admin.dto.UserLoginRequestDto;
+import com.level3.admin.dto.login.UserLoginRequestDto;
 import com.level3.admin.entity.UserRoleEnum;
 import com.level3.admin.security.UserDetailsImpl;
 import jakarta.servlet.FilterChain;
@@ -34,7 +34,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             // Json 형태의 String 데이터를 -> object로 바꾸기
             return getAuthenticationManager().authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            requestDto.getUsername(),
+                            requestDto.getEmail(),
                             requestDto.getPassword(),
                             null
                     )

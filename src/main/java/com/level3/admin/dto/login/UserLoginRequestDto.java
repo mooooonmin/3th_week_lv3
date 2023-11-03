@@ -1,27 +1,19 @@
-package com.level3.admin.dto;
+package com.level3.admin.dto.login;
 
-import com.level3.admin.entity.DepartmentEnum;
 import com.level3.admin.entity.User;
-import com.level3.admin.entity.UserRoleEnum;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+@Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserSignupRequestDto {
-
-    // 로그인에 관련된 유효성검사
-    // 로그인 요청
-
-    @NotBlank(message = "이름은 비어있을 수 없습니다")
-    private String username;
+public class UserLoginRequestDto {
 
     @Email(message = "형식에 맞게 입력하세요")
     @NotBlank(message = "이메일은 비어있을 수 없습니다")
@@ -32,20 +24,4 @@ public class UserSignupRequestDto {
             message = "비밀번호는 8~15자리면서 알파벳, 숫자, 특수만자를 포함해야합니다")
     private String password;
 
-    private String checkedPassword;
-
-    private DepartmentEnum department;
-
-    private boolean admin = false;
-    private String adminToken = "";
-
-    @Builder
-    public User toEntity(){
-        return User.builder()
-                .username(username)
-                .email(email)
-                .password(password)
-                .department(department)
-                .build();
-    }
 }
