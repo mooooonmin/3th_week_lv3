@@ -75,6 +75,7 @@ public class JwtUtil {
     }
 
     // JWT 토큰 substring
+    // TODO 여기서 계속 걸리는 듯? 갓가은님 정답을알려줘....
     public String substringToken(String tokenValue) {
         // 토큰값이 null 이거나, 비어있지 않고 베어럴로 시작하는지 체크
         if (StringUtils.hasText(tokenValue) && tokenValue.startsWith(BEARER_PREFIX)) {
