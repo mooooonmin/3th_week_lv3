@@ -41,7 +41,7 @@ public class JwtUtil {
 
     @PostConstruct
     public void init() {
-        byte[] bytes = Base64.getDecoder().decode(secretKey);
+        byte[] bytes = Base64.getDecoder().decode(secretKey); // 인코더된거 -> 디코더
         key = Keys.hmacShaKeyFor(bytes);
     }
 
@@ -75,15 +75,27 @@ public class JwtUtil {
     }
 
     // JWT 토큰 substring
-    // TODO 여기서 계속 걸리는 듯? 갓가은님 정답을알려줘....
-    public String substringToken(String tokenValue) {
+    public String substringToken(String token) {
+        if (token == null) {
+            throw new IllegalArgumentException("Not Found Token");
+        }
+        if (token.startsWith("Bearer ")) {
+            return token.substring(7);
+        }
+        throw new IllegalArgumentException("Not Found Token");
+    }
+
+
+
+    // TODO 수정전
+    /*public String substringToken(String tokenValue) {
         // 토큰값이 null 이거나, 비어있지 않고 베어럴로 시작하는지 체크
         if (StringUtils.hasText(tokenValue) && tokenValue.startsWith(BEARER_PREFIX)) {
             return tokenValue.substring(7);
         }
         logger.error("Not Found Token");
         throw new NullPointerException("Not Found Token");
-    }
+    }*/
 
     // 위에서 토큰을 잘라서 -> 자른토큰을 HttpServletRequest에서 추출
     public String getTokenFromRequest(HttpServletRequest request) {

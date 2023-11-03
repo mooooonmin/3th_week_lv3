@@ -42,7 +42,7 @@ public class LecturerService {
         }
     }
 
-    // 매니저 권한만 강사 수정 가능
+    // 매니저 권한만 선택 강사 수정 가능
     @Transactional
     public void updateLecturer(HttpServletRequest request, Long id, LecturerRequestDto requestDto) {
         // 토큰에서 사용자의 권한을 가져옴
@@ -61,4 +61,6 @@ public class LecturerService {
             throw new RuntimeException("매니저만 강사 정보 수정이 가능합니다");
         }
     }
+
+    // TODO 선택강사 삭제
 }

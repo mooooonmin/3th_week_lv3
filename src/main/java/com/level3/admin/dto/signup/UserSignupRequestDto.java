@@ -5,13 +5,11 @@ import com.level3.admin.entity.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Builder
+@Setter // TODO 나중에 삭제
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserSignupRequestDto {
@@ -35,7 +33,10 @@ public class UserSignupRequestDto {
 
     private DepartmentEnum department;
 
+    @Builder.Default
     private boolean isAdmin = false;
+
+    @Builder.Default
     private String adminToken = "";
 
     @Builder

@@ -33,7 +33,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         String tokenValue = jwtUtil.getTokenFromRequest(req);
 
-        // 회원가입 및 기타 예외 경로 체크
+        // TODO 회원가입 및 기타 예외 경로
         String requestURI = req.getRequestURI();
         if ("/api/user/join".equals(requestURI)) {
             log.info("Request URI: {}", requestURI);
@@ -43,9 +43,21 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
 
         if (StringUtils.hasText(tokenValue)) {
+
             // JWT 토큰 substring
-            tokenValue = jwtUtil.substringToken(tokenValue);
+            try {
+                tokenValue = jwtUtil.substringToken(tokenValue);
+            } catch (IllegalArgumentException e) {
+                log.error("Error: {}", e.getMessage());
+                filterChain.doFilter(req, res);
+                return;
+            }
             log.info(tokenValue);
+
+            // TODO 수정전 -> NPE 나서 필터로 가기전에 막힘?
+            // JWT 토큰 substring
+           /* tokenValue = jwtUtil.substringToken(tokenValue);
+            log.info(tokenValue);*/
 
             if (!jwtUtil.validateToken(tokenValue)) {
                 log.error("Token validation failed for token: {}", tokenValue);
