@@ -3,7 +3,6 @@ package com.level3.admin.service;
 import com.level3.admin.dto.signup.UserSignupRequestDto;
 import com.level3.admin.entity.User;
 import com.level3.admin.entity.UserRoleEnum;
-import com.level3.admin.jwt.JwtUtil;
 import com.level3.admin.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

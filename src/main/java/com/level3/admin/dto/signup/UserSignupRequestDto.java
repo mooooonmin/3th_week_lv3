@@ -28,14 +28,14 @@ public class UserSignupRequestDto {
 
     @NotBlank(message = "비밀번호는 비어있을 수 없습니다")
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,15}$",
-            message = "비밀번호는 8~15자리면서 알파벳, 숫자, 특수만자를 포함해야합니다")
+            message = "비밀번호는 8~15자리면서 알파벳, 숫자, 특수문자를 포함해야합니다")
     private String password;
 
     private String checkedPassword;
 
     private DepartmentEnum department;
 
-    private boolean admin = false;
+    private boolean isAdmin = false;
     private String adminToken = "";
 
     @Builder

@@ -61,14 +61,15 @@ public class SecurityConfig {
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
-                        .requestMatchers("/api/user/**").permitAll() // '/api/user/'로 시작하는 요청 모두 접근 허가
-                        .anyRequest().authenticated() // 그 외 모든 요청 인증처리
+                        .requestMatchers("/api/user/join").permitAll() // 회원가입은 모두 허용
+                        .requestMatchers("/api/user/login/**").authenticated() // '/api/user/login/**'로 시작하는 요청 모두 인증 필요
+                        .anyRequest().authenticated() // 그 외 모든 요청 인증 처리
         );
 
-        http.formLogin((formLogin) ->
+        /*http.formLogin((formLogin) ->
                 formLogin
                         .loginPage("/api/user/login-page").permitAll()
-        );
+        );*/
 
         // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
