@@ -22,42 +22,45 @@ public class UserService {
 
     private final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
-    public void signUp(UserSignupRequestDto requestDto) {
-        String email = requestDto.getEmail();
-        // 요청받은 비밀번호를 인코딩해서 넣기
-        String password = passwordEncoder.encode(requestDto.getPassword())
-    }
+    public User signUp(UserSignupRequestDto requestDto) {
 
-    // 회원 중복 확인
-    Optional<User> checkUsername = userRepository.findByUsername(username);
-        if(checkUsername.isPresent())
-
-    {
-        throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
-    }
-
-    // email 중복확인
-    String email = requestDto.getEmail();
-    Optional<User> checkEmail = userRepository.findByEmail(email);
-        if(checkEmail.isPresent())
-
-    {
-        throw new IllegalArgumentException("중복된 Email 입니다.");
-    }
-
-    // 사용자 ROLE 확인
-    UserRoleEnum role = UserRoleEnum.STAFF;
-        if(requestDto.isAdmin())
-
-    {
-        if (!ADMIN_TOKEN.equals(requestDto.getAdminToken())) {
-            throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
+        // 사용자이름 중복 확인
+        Optional<User> checkUsername = userRepository.findByUsername(requestDto.getUsername());
+        if (checkUsername.isPresent()) {
+            throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
-        role = UserRoleEnum.MANAGER;
-    }
 
-    // 사용자 등록
-    User user = new User(username, password, email, role);
-        userRepository.save(user);
+        // 이메일 중복 확인
+        String email = requestDto.getEmail();
+        Optional<User> checkEmail = userRepository.findByEmail(email);
+        if (checkEmail.isPresent()) {
+            throw new IllegalArgumentException("중복된 Email 입니다.");
+        }
+
+        // 비밀번호 인코딩
+        String password = passwordEncoder.encode(requestDto.getPassword());
+
+
+        // 사용자 ROLE 확인
+        UserRoleEnum role = UserRoleEnum.STAFF;
+        if (requestDto.isAdmin()) {
+            if (!ADMIN_TOKEN.equals(requestDto.getAdminToken())) {
+                throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
+            }
+            role = UserRoleEnum.MANAGER;
+        }
+
+        // 사용자 등록
+        User user = User.builder()
+                .username(requestDto.getUsername())
+                .password(password)
+                .email(email)
+                .role(role) // 회원가입요청시 사용자가 직접 권한을 지정하지 않음, 서버측에서 결정 - 토큰값으로 결정하나봄
+                .department(requestDto.getDepartment()) // 이건 회원가입시 직접 입력이라서
+                .build();
+
+        return userRepository.save(user);
+
+    }
 }
 

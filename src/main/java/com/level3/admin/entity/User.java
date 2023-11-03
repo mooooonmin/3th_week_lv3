@@ -3,12 +3,11 @@ package com.level3.admin.entity;
 import com.level3.admin.dto.UserSignupRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
-@Setter
-@Table(name = "user")
 @Builder
+@Table(name = "user")
+// @EqualsAndHashCode(of = "userId") // 중복 회원을 방지하기 위해 - 근데 추천하지 않는?
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -36,26 +35,11 @@ public class User {
     private UserRoleEnum role;
 
     public User(UserSignupRequestDto requestDto) {
+        this.username = requestDto.getUsername();
         this.email = requestDto.getEmail();
         this.password = requestDto.getPassword();
         this.department = requestDto.getDepartment();
         this.role = requestDto.getRole();
     }
-
-    // TODO 꼭 여기다 만들어줘야하나?
-    public void encodePassword(PasswordEncoder passwordEncoder) {
-        this.password = passwordEncoder.encode(password);
-    }
-
-    // 비밀번호 일치 여부 확인 메서드
-    public boolean checkPassword(PasswordEncoder passwordEncoder, String rawPassword) {
-        return passwordEncoder.matches(rawPassword, this.password);
-    }
-
-    // 사용자 권한 부여 메서드
-    public void addUserAuthority(UserRoleEnum role) {
-        this.role = role;
-    }
-
 
 }
