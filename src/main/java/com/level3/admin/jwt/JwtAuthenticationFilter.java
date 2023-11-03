@@ -21,7 +21,6 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final JwtUtil jwtUtil;
 
-    // TODO api/user/login 으로 접근은 필터를 넘어갈수있게 하려고 했으나 실패
     public JwtAuthenticationFilter(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
         setFilterProcessesUrl("/api/user/login");

@@ -24,16 +24,9 @@ public class UserController {
     private final UserDetailsServiceImpl userServiceImpl;
 
     // 회원가입
-    @PostMapping("/join") // 어노테이션으로 http 상태코드를 전달할수있지만 직접적으로 설정은 다르게함
+    @PostMapping("/join") // 어노테이션으로 http 상태코드를 전달할수있지만, 직접적으로 설정은 다르게함
     public ResponseEntity<UserSignupResponseDto> join(@Valid @RequestBody UserSignupRequestDto requestDto) throws Exception {
-        User user = userService.signUp(requestDto);
-        UserSignupResponseDto responseDto = new UserSignupResponseDto(
-                user.getUsername(),
-                user.getEmail(),
-                user.getRole(),
-                user.getDepartment(),
-                "성공적으로 가입되셨습니다"
-        );
+        UserSignupResponseDto responseDto = userService.signUp(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 

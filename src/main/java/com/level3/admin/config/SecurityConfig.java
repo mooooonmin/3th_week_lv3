@@ -19,7 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity // Spring Security 지원을 가능하게 함
-//@EnableGlobalMethodSecurity(securedEnabled = true)
+//@EnableGlobalMethodSecurity(securedEnabled = true) -> 이거달아놓으면 메서드에 @Secured("ROLE_ADMIN") 사용해서 접근권한 조정가능
 public class SecurityConfig {
 
     private final JwtUtil jwtUtil;
@@ -64,7 +64,7 @@ public class SecurityConfig {
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
                         .requestMatchers("/api/user/join").permitAll() // 회원가입은 모두 허용
-                        .requestMatchers("/api/user/login/**").authenticated() // '/api/user/login/**'로 시작하는 요청 모두 인증 필요
+                        .requestMatchers("/api/user/login").permitAll() // 로그인까지 허용
                         .anyRequest().authenticated() // 그 외 모든 요청 인증 처리
         );
 
@@ -78,7 +78,7 @@ public class SecurityConfig {
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         // 접근 불가 페이지
-        http.exceptionHandling((exceptionHandling) -> exceptionHandling.accessDeniedPage("/forbidden.html"));
+        // http.exceptionHandling((exceptionHandling) -> exceptionHandling.accessDeniedPage("/forbidden.html"));
 
         return http.build();
     }

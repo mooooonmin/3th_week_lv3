@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -31,7 +30,7 @@ public class JwtUtil {
     // 토큰 만료시간
     private final long TOKEN_TIME = 60 * 60 * 1000L; // 60분
 
-    @Value("${jwt.secret.key}") // Base64 Encode 한 SecretKey
+    @Value("${jwt.secret.key}")
     private String secretKey;
     private Key key;
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
@@ -75,14 +74,15 @@ public class JwtUtil {
     }
 
     // JWT 토큰 substring
+    // TODO 여기서 문제 남 -> 왜 회원가입 할 때 나지?
     public String substringToken(String token) {
         if (token == null) {
-            throw new IllegalArgumentException("Not Found Token");
+            throw new IllegalArgumentException("토큰 못 찾음");
         }
         if (token.startsWith("Bearer ")) {
             return token.substring(7);
         }
-        throw new IllegalArgumentException("Not Found Token");
+        throw new IllegalArgumentException("토큰 못 찾음2");
     }
 
 
