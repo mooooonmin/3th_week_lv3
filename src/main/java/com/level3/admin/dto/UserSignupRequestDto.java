@@ -9,11 +9,12 @@ import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @AllArgsConstructor
-//@NoArgsConstructor
+@NoArgsConstructor
 public class UserSignupRequestDto {
 
     // 로그인에 관련된 유효성검사
@@ -35,8 +36,6 @@ public class UserSignupRequestDto {
 
     private DepartmentEnum department;
 
-    private UserRoleEnum role;
-
     private boolean admin = false;
     private String adminToken = "";
 
@@ -47,7 +46,6 @@ public class UserSignupRequestDto {
                 .email(email)
                 .password(password)
                 .department(department)
-                .role(role)
                 .build();
     }
 }

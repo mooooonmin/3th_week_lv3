@@ -42,12 +42,14 @@ public class UserService {
 
 
         // 사용자 ROLE 확인
+        // 기본적으로 staff -> 인증하면 manager
         UserRoleEnum role = UserRoleEnum.STAFF;
         if (requestDto.isAdmin()) {
-            if (!ADMIN_TOKEN.equals(requestDto.getAdminToken())) {
+            if (ADMIN_TOKEN.equals(requestDto.getAdminToken())) {
+                role = UserRoleEnum.MANAGER;
+            } else {
                 throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
             }
-            role = UserRoleEnum.MANAGER;
         }
 
         // 사용자 등록

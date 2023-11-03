@@ -39,7 +39,7 @@ public class User {
         this.email = requestDto.getEmail();
         this.password = requestDto.getPassword();
         this.department = requestDto.getDepartment();
-        this.role = requestDto.getRole();
     }
+
 
 }

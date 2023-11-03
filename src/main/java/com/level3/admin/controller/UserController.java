@@ -33,8 +33,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
-    @PostMapping("/login")
+    /*@PostMapping("/login")
     public String login(@RequestBody Map<String, String> user) {
         return userService.login(user);
-    }
+    }*/
 }
