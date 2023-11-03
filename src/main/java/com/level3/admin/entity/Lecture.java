@@ -1,6 +1,6 @@
 package com.level3.admin.entity;
 
-import com.level3.admin.dto.LectureRequestDto;
+import com.level3.admin.dto.lecture.LectureRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

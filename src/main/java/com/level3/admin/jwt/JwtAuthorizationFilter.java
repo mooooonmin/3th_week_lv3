@@ -33,13 +33,23 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         String tokenValue = jwtUtil.getTokenFromRequest(req);
 
+        // 회원가입 및 기타 예외 경로 체크
+        String requestURI = req.getRequestURI();
+        if ("/api/user/join".equals(requestURI)) {
+            log.info("Request URI: {}", requestURI);
+            // 회원가입 경로면 필터를 건너뛰고 다음 필터로 넘어간다.
+            filterChain.doFilter(req, res);
+            return;
+        }
+
         if (StringUtils.hasText(tokenValue)) {
             // JWT 토큰 substring
             tokenValue = jwtUtil.substringToken(tokenValue);
             log.info(tokenValue);
 
             if (!jwtUtil.validateToken(tokenValue)) {
-                log.error("Token Error");
+                log.error("Token validation failed for token: {}", tokenValue);
+                //log.error("Token Error");
                 return;
             }
 
@@ -47,8 +57,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
             try {
                 setAuthentication(info.getSubject());
+                log.info("Authentication set for user: {}", info.getSubject());
             } catch (Exception e) {
-                log.error(e.getMessage());
+                log.error("Error setting authentication: {}", e.getMessage());
                 return;
             }
         }

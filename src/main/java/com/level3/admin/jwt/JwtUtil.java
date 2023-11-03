@@ -76,6 +76,7 @@ public class JwtUtil {
 
     // JWT 토큰 substring
     public String substringToken(String tokenValue) {
+        // 토큰값이 null 이거나, 비어있지 않고 베어럴로 시작하는지 체크
         if (StringUtils.hasText(tokenValue) && tokenValue.startsWith(BEARER_PREFIX)) {
             return tokenValue.substring(7);
         }
@@ -86,6 +87,9 @@ public class JwtUtil {
     // 위에서 토큰을 잘라서 -> 자른토큰을 HttpServletRequest에서 추출
     public String getTokenFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        if(bearerToken != null) {
+            return substringToken(bearerToken);
+        }
         return substringToken(bearerToken);
     }
 
@@ -111,5 +115,10 @@ public class JwtUtil {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
+    // 매니저인지 확인
+    public UserRoleEnum getUserRoleFromToken(String token) {
+        Claims claims = getUserInfoFromToken(token);
+        return UserRoleEnum.valueOf(claims.get(AUTHORIZATION_KEY).toString());
+    }
 
 }

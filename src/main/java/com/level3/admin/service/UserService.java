@@ -19,8 +19,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
-
     public User signUp(UserSignupRequestDto requestDto) {
 
         // 사용자이름 중복 확인
@@ -44,6 +42,7 @@ public class UserService {
         // 기본적으로 staff -> 인증하면 manager
         UserRoleEnum role = UserRoleEnum.STAFF;
         if (requestDto.isAdmin()) {
+            String ADMIN_TOKEN = "asdfasdfasdfasdf"; // 토큰위치 수정
             if (ADMIN_TOKEN.equals(requestDto.getAdminToken())) {
                 role = UserRoleEnum.MANAGER;
             } else {
