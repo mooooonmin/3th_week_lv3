@@ -9,15 +9,18 @@ import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @AllArgsConstructor
 //@NoArgsConstructor
-public class UserRequestDto {
+public class UserSignupRequestDto {
 
     // 로그인에 관련된 유효성검사
+    // 로그인 요청
+
+    @NotBlank(message = "이름은 비어있을 수 없습니다")
+    private String username;
 
     @Email(message = "형식에 맞게 입력하세요")
     @NotBlank(message = "이메일은 비어있을 수 없습니다")
@@ -34,9 +37,13 @@ public class UserRequestDto {
 
     private UserRoleEnum role;
 
+    private boolean admin = false;
+    private String adminToken = "";
+
     @Builder
     public User toEntity(){
         return User.builder()
+                .username(username)
                 .email(email)
                 .password(password)
                 .department(department)

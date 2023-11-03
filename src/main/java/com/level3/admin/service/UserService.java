@@ -1,16 +1,63 @@
 package com.level3.admin.service;
 
-import com.level3.admin.dto.UserRequestDto;
+import com.level3.admin.dto.UserSignupRequestDto;
+import com.level3.admin.entity.User;
+import com.level3.admin.entity.UserRoleEnum;
+import com.level3.admin.jwt.JwtUtil;
+import com.level3.admin.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
-import java.util.Map;
+import java.util.Optional;
 
-public interface UserService {
+@Service
+@RequiredArgsConstructor
+public class UserService {
 
-    // 회원가입
-    // UserRequestDto -> 사용자로부터 회원가입에 필요한 정보를 받아옴
-    // 반환값 Long -> 일반적으로 회원가입이 성공적으로 완료된 후, 생성된 사용자의 고유id 를 반환하는 것
-    // 호출한 곳으로 예외를 전달 -> 예) 이미 존재하는 이메일로 회원가입 시도할 때
-    public Long signUp(UserRequestDto requestDto) throws Exception;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public String login(Map<String, String> users);
+    private final JwtUtil jwtUtil;
+
+    private final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
+
+    public void signUp(UserSignupRequestDto requestDto) {
+        String email = requestDto.getEmail();
+        // 요청받은 비밀번호를 인코딩해서 넣기
+        String password = passwordEncoder.encode(requestDto.getPassword())
+    }
+
+    // 회원 중복 확인
+    Optional<User> checkUsername = userRepository.findByUsername(username);
+        if(checkUsername.isPresent())
+
+    {
+        throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
+    }
+
+    // email 중복확인
+    String email = requestDto.getEmail();
+    Optional<User> checkEmail = userRepository.findByEmail(email);
+        if(checkEmail.isPresent())
+
+    {
+        throw new IllegalArgumentException("중복된 Email 입니다.");
+    }
+
+    // 사용자 ROLE 확인
+    UserRoleEnum role = UserRoleEnum.STAFF;
+        if(requestDto.isAdmin())
+
+    {
+        if (!ADMIN_TOKEN.equals(requestDto.getAdminToken())) {
+            throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
+        }
+        role = UserRoleEnum.MANAGER;
+    }
+
+    // 사용자 등록
+    User user = new User(username, password, email, role);
+        userRepository.save(user);
 }
+
