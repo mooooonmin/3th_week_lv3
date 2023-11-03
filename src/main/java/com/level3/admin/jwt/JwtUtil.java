@@ -5,6 +5,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,6 +83,12 @@ public class JwtUtil {
         throw new NullPointerException("Not Found Token");
     }
 
+    // 위에서 토큰을 잘라서 -> 자른토큰을 HttpServletRequest에서 추출
+    public String getTokenFromRequest(HttpServletRequest request) {
+        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        return substringToken(bearerToken);
+    }
+
     // 토큰 검증
     public boolean validateToken(String token) {
         try {
@@ -103,4 +110,6 @@ public class JwtUtil {
     public Claims getUserInfoFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
+
+
 }
