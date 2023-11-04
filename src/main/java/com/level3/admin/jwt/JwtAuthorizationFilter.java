@@ -36,7 +36,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         // TODO 회원가입 및 기타 예외 경로
         String requestURI = req.getRequestURI();
         if ("/api/user/join".equals(requestURI)) {
-            log.info("Request URI: {}", requestURI);
             // 회원가입 경로면 필터를 건너뛰고 다음 필터로 넘어간다
             filterChain.doFilter(req, res);
             return;
@@ -46,7 +45,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
             // 토큰의 유효성 검사
             if (!jwtUtil.validateToken(tokenValue)) {
-                log.error("Token validation failed for token: {}", tokenValue);
                 return;
             }
 
@@ -54,7 +52,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
             try {
                 setAuthentication(info.getSubject());
-                log.info("Authentication set for user: {}", info.getSubject());
             } catch (Exception e) {
                 log.error("Error setting authentication: {}", e.getMessage());
                 return;

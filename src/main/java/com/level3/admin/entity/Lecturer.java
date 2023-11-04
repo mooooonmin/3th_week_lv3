@@ -16,23 +16,19 @@ public class Lecturer {
     private Long id;
 
     @Column(name = "name", nullable = false, unique = true)
-    private String name; // 강사명
+    private String name;
 
     @Column(name = "career", nullable = false)
-    private String career; // 경력(년차)
+    private String career;
 
     @Column(name = "company", nullable = false)
-    private String company; // 회사
+    private String company;
 
     @Column(name = "number", nullable = false)
-    private String number; // 전화번호
+    private String number;
 
     @Column(name = "info", nullable = false)
-    private String info; // 강사소개
-
-    // 강의 - 강사 단방향 설정을 위해 일단 여기서는 삭제
-//    @OneToMany(mappedBy = "lecturer") // 강사의 해당강의를 조회할 수 있게 해줌
-//    private List<Lecture> lectures = new ArrayList<>();
+    private String info;
 
     public Lecturer(LecturerRequestDto requestDto) {
         this.name = requestDto.getName();

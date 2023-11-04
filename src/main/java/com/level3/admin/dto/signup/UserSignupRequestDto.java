@@ -9,13 +9,9 @@ import lombok.*;
 
 @Data
 @Builder
-@Setter // TODO 나중에 삭제
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserSignupRequestDto {
-
-    // 로그인에 관련된 유효성검사
-    // 로그인 요청
 
     @NotBlank(message = "이름은 비어있을 수 없습니다")
     private String username;
@@ -28,8 +24,6 @@ public class UserSignupRequestDto {
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,15}$",
             message = "비밀번호는 8~15자리면서 알파벳, 숫자, 특수문자를 포함해야합니다")
     private String password;
-
-    // private String checkedPassword;
 
     private DepartmentEnum department;
 

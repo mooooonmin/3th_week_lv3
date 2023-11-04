@@ -2,16 +2,17 @@ package com.level3.admin.entity;
 
 import com.level3.admin.dto.signup.UserSignupRequestDto;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter // TODO 나중에 삭제
 @Builder
 @Table(name = "user")
-// @EqualsAndHashCode(of = "userId") // 중복 회원을 방지하기 위해 - 근데 추천하지 않는?
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor // (access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class User {
 
     @Id

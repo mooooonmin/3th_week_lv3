@@ -18,7 +18,6 @@ public class LecturerController {
 
     private final LecturerService lecturerService;
 
-    // @/api/lecturer - 스태프와 매니저의 권한 확인후 강사 등록
     @Secured({"ROLE_STAFF", "ROLE_MANAGER"})
     @PostMapping("/lecturer")
     public ResponseEntity<LecturerResponseDto> createLecturer(@RequestBody LecturerRequestDto requestDto) {
@@ -26,7 +25,6 @@ public class LecturerController {
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
-    // 선택한 강사 정보 조회
     @Secured({"ROLE_STAFF", "ROLE_MANAGER"})
     @GetMapping("/lecturer/{id}")
     public ResponseEntity<LecturerResponseDto> getLecturerById(@PathVariable Long id) {
@@ -34,7 +32,6 @@ public class LecturerController {
         return new ResponseEntity<>(lecturer, HttpStatus.OK);
     }
 
-    // 전체 강사 정보 조회
     @Secured({"ROLE_STAFF", "ROLE_MANAGER"})
     @GetMapping("/lecturers")
     public ResponseEntity<List<LecturerResponseDto>> getAllLecturers() {
@@ -42,7 +39,6 @@ public class LecturerController {
         return new ResponseEntity<>(lecturers, HttpStatus.OK);
     }
 
-    // @/api/lecturer/{id} - 선택한 강사 정보 수정 - 매니저 권한만 가능
     @Secured("ROLE_MANAGER")
     @PutMapping("/lecturer/{id}")
     public ResponseEntity<?> updateLecturer(@PathVariable Long id,
@@ -55,7 +51,6 @@ public class LecturerController {
         }
     }
 
-    // 선택한 강사 정보 삭제 - 매니저 권한만 가능
     @Secured("ROLE_MANAGER")
     @DeleteMapping("/lecturer/{id}")
     public ResponseEntity<?> deleteLecturer(@PathVariable Long id) {

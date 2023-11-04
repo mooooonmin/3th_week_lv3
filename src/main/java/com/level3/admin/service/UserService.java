@@ -44,26 +44,33 @@ public class UserService {
 
         // 사용자 ROLE 확인 및 메시지
         UserRoleEnum role = UserRoleEnum.STAFF;
-        String message = "성공적으로 가입되셨습니다."; // 기본 메세지
+        String message = "성공적으로 가입되셨습니다.";
 
         if (requestDto.isAdmin()) {
+
             log.info("isAdmin->true, adminToken 체크");
             String ADMIN_TOKEN = "asdfasdfasdfasdf";
+
             if (ADMIN_TOKEN.equals(requestDto.getAdminToken())) {
+
                 log.info("Admin token 맞을, 부서 확인.");
                 // 부서가 DEVELOPMENT 또는 CURRICULUM인 경우만 MANAGER 권한 부여
                 DepartmentEnum department = requestDto.getDepartment();
+
                 if (department == DepartmentEnum.DEVELOPMENT || department == DepartmentEnum.CURRICULUM) {
                     log.info("부서까지 맞으면 manager");
                     role = UserRoleEnum.MANAGER;
+
                 } else {
                     log.warn("Invalid department for MANAGER role. Setting role to STAFF.");
                     message = "MANAGER 권한은 DEVELOPMENT 또는 CURRICULUM 부서에서만 가능합니다.";
                 }
+
             } else {
                 log.warn("Admintoken 틀릴 때, STAFF");
                 message = "토큰이 틀려서 STAFF로 가입됩니다.";
             }
+
         } else {
             log.info("isAdmin -> false. STAFF");
         }

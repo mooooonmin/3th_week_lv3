@@ -25,16 +25,5 @@ public class UserLoginResponseDto {
         this.department = user.getDepartment();
         this.message = "로그인에 성공하였습니다";
         this.token = token;
-
-        log.info("응답dto: Token - {}, " +
-                "Username - {}, " +
-                "Role - {}, " +
-                "Message - {}, " +
-                "Department - {}",
-                token,
-                username,
-                role,
-                message,
-                department);
     }
 }
