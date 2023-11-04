@@ -1,6 +1,7 @@
 package com.level3.admin.dto.login;
 
 import com.level3.admin.entity.DepartmentEnum;
+import com.level3.admin.entity.User;
 import com.level3.admin.entity.UserRoleEnum;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,12 +19,22 @@ public class UserLoginResponseDto {
     private String message;
     private String token;
 
-    public UserLoginResponseDto(String token, String username, UserRoleEnum role, String message, DepartmentEnum department) {
-        log.info("응답dto: Token - {}, Username - {}, Role - {}, Message - {}, Department - {}", token, username, role, message, department);
-        this.username = username;
-        this.role = role;
-        this.department = department;
-        this.message = message;
+    public UserLoginResponseDto(User user, String token) {
+        this.username = user.getUsername();
+        this.role = user.getRole();
+        this.department = user.getDepartment();
+        this.message = "로그인에 성공하였습니다";
         this.token = token;
+
+        log.info("응답dto: Token - {}, " +
+                "Username - {}, " +
+                "Role - {}, " +
+                "Message - {}, " +
+                "Department - {}",
+                token,
+                username,
+                role,
+                message,
+                department);
     }
 }

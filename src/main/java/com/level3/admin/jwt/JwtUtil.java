@@ -51,8 +51,7 @@ public class JwtUtil {
         Date date = new Date();
 
         log.info("토큰 생성 시작: 사용자 이름 - {}, 권한 - {}", email, role);
-        String token =  BEARER_PREFIX +
-                Jwts.builder()
+        String token = Jwts.builder()
                         .setSubject(email) // 사용자 식별자값(ID)
                         .claim(AUTHORIZATION_KEY, role) // 사용자 권한
                         .setExpiration(new Date(date.getTime() + TOKEN_TIME)) // 만료 시간
@@ -80,26 +79,8 @@ public class JwtUtil {
         }
     }
 
-    // JWT 토큰 substring
-    // TODO 여기서 문제 남 -> 왜 회원가입 할 때 나지?
-    public String substringToken(String token) {
-        if (token == null) {
-            throw new IllegalArgumentException("토큰 못 찾음");
-        }
-        if (token.startsWith("Bearer ")) {
-            return token.substring(7);
-        }
-        throw new IllegalArgumentException("토큰 못 찾음2");
-    }
-
-    // 위에서 토큰을 잘라서 -> 자른토큰을 HttpServletRequest에서 추출
     public String getTokenFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        if(bearerToken != null) {
-            return substringToken(bearerToken);
-        }
-        return null;
-        // return substringToken(bearerToken);
+        return request.getHeader(AUTHORIZATION_HEADER);
     }
 
     // 토큰 검증
@@ -122,12 +103,6 @@ public class JwtUtil {
     // 토큰에서 사용자 정보 가져오기
     public Claims getUserInfoFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
-    }
-
-    // 매니저인지 확인
-    public UserRoleEnum getUserRoleFromToken(String token) {
-        Claims claims = getUserInfoFromToken(token);
-        return UserRoleEnum.valueOf(claims.get(AUTHORIZATION_KEY).toString());
     }
 
 }

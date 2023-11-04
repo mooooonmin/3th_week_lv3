@@ -62,6 +62,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         log.info("사용자를 위한 토큰생성: {}", requestDto.getEmail());
 
         // 응답 객체 생성 및 반환
-        return new UserLoginResponseDto(token, user.getEmail(), user.getRole(), "로그인에 성공하였습니다.", user.getDepartment());
+        return new UserLoginResponseDto(user, token);
     }
 }

@@ -44,17 +44,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         if (StringUtils.hasText(tokenValue)) {
 
-            // JWT 토큰 substring
-            try {
-                tokenValue = jwtUtil.substringToken(tokenValue);
-            } catch (IllegalArgumentException e) {
-                log.error("Error: {}", e.getMessage());
-                filterChain.doFilter(req, res);
-                return;
-            }
-            log.info(tokenValue);
-
-
+            // 토큰의 유효성 검사
             if (!jwtUtil.validateToken(tokenValue)) {
                 log.error("Token validation failed for token: {}", tokenValue);
                 return;
@@ -70,7 +60,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 return;
             }
         }
-
         filterChain.doFilter(req, res);
     }
 

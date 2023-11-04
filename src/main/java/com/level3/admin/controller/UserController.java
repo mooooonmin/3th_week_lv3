@@ -4,7 +4,6 @@ import com.level3.admin.dto.login.UserLoginRequestDto;
 import com.level3.admin.dto.login.UserLoginResponseDto;
 import com.level3.admin.dto.signup.UserSignupRequestDto;
 import com.level3.admin.dto.signup.UserSignupResponseDto;
-import com.level3.admin.entity.User;
 import com.level3.admin.security.UserDetailsServiceImpl;
 import com.level3.admin.service.UserService;
 import jakarta.validation.Valid;
@@ -12,9 +11,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
