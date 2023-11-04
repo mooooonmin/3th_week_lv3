@@ -22,13 +22,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    // 입력받은 사용자의 이름을 통해서 조회
+    // 입력받은 사용자의 이름을 통해서 조회 -> 이메일로 인증하는데 이름을 찾느낟?
     // 해당 사용자 정보 -> userDetails로 변환해서 반환
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Not Found " + username));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        log.info("Fetching user details for: {}", email);  // 로그 추가
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> {
+                    log.error("User not found: {}", email);  // 로그 추가
+                    return new UsernameNotFoundException("Not Found " + email);
+                });
 
+        log.info("User details loaded successfully for: {}", email);  // 로그 추가
         return new UserDetailsImpl(user);
     }
 
@@ -38,21 +43,21 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // 사용자 조회
         User user = userRepository.findByEmail(requestDto.getEmail())
                 .orElseThrow(() -> {
-                    log.error("사용자 이메일 몾찾음: {}", requestDto.getEmail()); // 로그 추가
+                    log.error("사용자 이메일 몾찾음: {}", requestDto.getEmail());
                     return new IllegalArgumentException("존재하지 않는 사용자입니다.");
                 });
 
         // 비밀번호 검증
         if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
-            log.error("비밀번호 불일치: {}", requestDto.getEmail()); // 로그 추가
+            log.error("비밀번호 불일치: {}", requestDto.getEmail());
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        log.info("Password verified for user: {}", requestDto.getEmail()); // 로그 추가
+        log.info("Password verified for user: {}", requestDto.getEmail());
 
         // 토큰 생성
         String token = jwtUtil.createToken(user.getUsername(), user.getRole());
-        log.info("사용자를 위한 토큰생성: {}", requestDto.getEmail()); // 로그 추가
+        log.info("사용자를 위한 토큰생성: {}", requestDto.getEmail());
 
         // 응답 객체 생성 및 반환
         return new UserLoginResponseDto(token, user.getUsername(), user.getRole(), "로그인에 성공하였습니다.", user.getDepartment());

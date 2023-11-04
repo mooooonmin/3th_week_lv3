@@ -32,6 +32,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         log.info("로그인 시도");
         try {
             UserLoginRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), UserLoginRequestDto.class);
+            log.info("Request Data - Email: {}, Password: {}", requestDto.getEmail(), requestDto.getPassword());
             // Json 형태의 String 데이터를 -> object로 바꾸기
             return getAuthenticationManager().authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -41,18 +42,21 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     )
             );
         } catch (IOException e) {
-            log.error(e.getMessage());
+            log.error("Error during authentication attempt: {}", e.getMessage());
             throw new RuntimeException(e.getMessage());
+        } catch (AuthenticationException e) {
+            log.error("Authentication failed: {}", e.getMessage());
+            throw e;
         }
     }
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         log.info("로그인 성공 및 JWT 생성");
-        String username = ((UserDetailsImpl) authResult.getPrincipal()).getUsername();
+        String email = ((UserDetailsImpl) authResult.getPrincipal()).getUsername();
         UserRoleEnum role = ((UserDetailsImpl) authResult.getPrincipal()).getUser().getRole();
 
-        String token = jwtUtil.createToken(username, role);
+        String token = jwtUtil.createToken(email, role);
         jwtUtil.addJwtToCookie(token, response);
     }
 

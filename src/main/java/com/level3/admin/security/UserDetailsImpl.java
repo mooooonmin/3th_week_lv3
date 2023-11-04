@@ -27,8 +27,8 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     @Override
-    public String getUsername() { // 유저이름 반환
-        return user.getUsername();
+    public String getUsername() { // TODO 변경점 유저이메일 반환
+        return user.getEmail();
     }
 
     // 사용자에게 부여된 권한 정보를 GrantedAuthority 형태로 반환
