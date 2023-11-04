@@ -9,6 +9,7 @@ import com.level3.admin.security.UserDetailsServiceImpl;
 import com.level3.admin.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
 @RestController
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -33,7 +35,9 @@ public class UserController {
     // 로그인
     @PostMapping("/login")
     public ResponseEntity<UserLoginResponseDto> login(@Valid @RequestBody UserLoginRequestDto requestDto) throws Exception {
+        log.info("메서드 호출");
         UserLoginResponseDto responseDto = userServiceImpl.login(requestDto);
+        log.info("응답 값: {}", responseDto);
         return ResponseEntity.ok(responseDto);
     }
 }

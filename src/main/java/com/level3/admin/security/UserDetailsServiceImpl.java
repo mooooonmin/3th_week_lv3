@@ -40,6 +40,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     // 로그인 요청 처리
     // 이메일 입력받아서 -> 사용자 조회 -> 비밀번호 검증 -> jwt 토큰 생성 -> 응답 반환
     public UserLoginResponseDto login(UserLoginRequestDto requestDto) {
+        log.info("login 메서드 호출됨: {}", requestDto.getEmail());
+
         // 사용자 조회
         User user = userRepository.findByEmail(requestDto.getEmail())
                 .orElseThrow(() -> {
@@ -53,13 +55,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        log.info("Password verified for user: {}", requestDto.getEmail());
+        log.info("이메일에 맞는 비밀번호 확인: {}", requestDto.getEmail());
 
         // 토큰 생성
-        String token = jwtUtil.createToken(user.getUsername(), user.getRole());
+        String token = jwtUtil.createToken(user.getEmail(), user.getRole());
         log.info("사용자를 위한 토큰생성: {}", requestDto.getEmail());
 
         // 응답 객체 생성 및 반환
-        return new UserLoginResponseDto(token, user.getUsername(), user.getRole(), "로그인에 성공하였습니다.", user.getDepartment());
+        return new UserLoginResponseDto(token, user.getEmail(), user.getRole(), "로그인에 성공하였습니다.", user.getDepartment());
     }
 }

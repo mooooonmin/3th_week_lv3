@@ -73,13 +73,20 @@ public class UserService {
                 .username(requestDto.getUsername())
                 .password(password)
                 .email(email)
-                .role(role) // 회원가입요청시 사용자가 직접 권한을 지정하지 않음, 서버측에서 결정 - 어드민토큰값으로 결정
-                .department(requestDto.getDepartment()) // 이건 회원가입시 직접 입력이라서
+                .role(role)
+                .department(requestDto.getDepartment())
+                .admin(requestDto.isAdmin())
                 .build();
 
         userRepository.save(user);
 
-        return new UserSignupResponseDto(user.getUsername(), user.getEmail(), user.getRole(), user.getDepartment(), message);
+        return new UserSignupResponseDto(
+                user.getUsername(),
+                user.getEmail(),
+                user.getRole(),
+                user.getDepartment(),
+                user.isAdmin(),
+                message);
 
     }
 }

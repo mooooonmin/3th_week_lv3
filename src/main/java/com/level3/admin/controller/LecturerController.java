@@ -22,6 +22,9 @@ public class LecturerController {
     @Secured({"ROLE_STAFF", "ROLE_MANAGER"})
     @PostMapping("/lecturer")
     public ResponseEntity<LecturerResponseDto> createLecturer(@RequestBody LecturerRequestDto requestDto) {
+
+        System.out.println("Create Lecturer API called. Request Data: " + requestDto);
+
         LecturerResponseDto responseDto = lecturerService.createLecturer(requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }

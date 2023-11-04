@@ -20,6 +20,7 @@ public class LecturerService {
 
     // 강사 등록 (매니저와 스태프 모두 가능)
     public LecturerResponseDto createLecturer(LecturerRequestDto requestDto) {
+        System.out.println("Service: Creating lecturer. Request Data: " + requestDto);
         Lecturer lecturer = new Lecturer(requestDto);
         lecturerRepository.save(lecturer);
         return new LecturerResponseDto(lecturer);
