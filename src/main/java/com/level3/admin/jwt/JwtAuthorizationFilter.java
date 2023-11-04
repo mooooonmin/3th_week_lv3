@@ -54,14 +54,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             }
             log.info(tokenValue);
 
-            // TODO 수정전 -> NPE 나서 필터로 가기전에 막힘?
-            // JWT 토큰 substring
-           /* tokenValue = jwtUtil.substringToken(tokenValue);
-            log.info(tokenValue);*/
 
             if (!jwtUtil.validateToken(tokenValue)) {
                 log.error("Token validation failed for token: {}", tokenValue);
-                //log.error("Token Error");
                 return;
             }
 

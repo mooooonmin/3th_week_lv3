@@ -58,27 +58,22 @@ public class SecurityConfig {
         // 기본 설정인 Session 방식은 사용하지 않고 JWT 방식을 사용하기 위한 설정
         http.sessionManagement((sessionManagement) ->
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        );
+        )
 
+                //.antMatchers("/api/users/**").permitAll()
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
-                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()// resources 접근 허용 설정
                         .requestMatchers("/api/user/join").permitAll() // 회원가입은 모두 허용
                         .requestMatchers("/api/user/login").permitAll() // 로그인까지 허용
                         .anyRequest().authenticated() // 그 외 모든 요청 인증 처리
         );
 
-        /*http.formLogin((formLogin) ->
-                formLogin
-                        .loginPage("/api/user/login-page").permitAll()
-        );*/
 
         // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
-        // 접근 불가 페이지
-        // http.exceptionHandling((exceptionHandling) -> exceptionHandling.accessDeniedPage("/forbidden.html"));
 
         return http.build();
     }

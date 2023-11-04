@@ -85,18 +85,6 @@ public class JwtUtil {
         throw new IllegalArgumentException("토큰 못 찾음2");
     }
 
-
-
-    // TODO 수정전
-    /*public String substringToken(String tokenValue) {
-        // 토큰값이 null 이거나, 비어있지 않고 베어럴로 시작하는지 체크
-        if (StringUtils.hasText(tokenValue) && tokenValue.startsWith(BEARER_PREFIX)) {
-            return tokenValue.substring(7);
-        }
-        logger.error("Not Found Token");
-        throw new NullPointerException("Not Found Token");
-    }*/
-
     // 위에서 토큰을 잘라서 -> 자른토큰을 HttpServletRequest에서 추출
     public String getTokenFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
