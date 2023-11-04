@@ -17,10 +17,6 @@ public class UserDetailsImpl implements UserDetails {
 
     private final User user;
 
-   /* public UserDetailsImpl(User user) {
-        this.user = user;
-    }*/
-
     public User getUser() { //// 유저엔티티 반환
         return user;
     }

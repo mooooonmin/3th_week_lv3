@@ -37,7 +37,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         String requestURI = req.getRequestURI();
         if ("/api/user/join".equals(requestURI)) {
             log.info("Request URI: {}", requestURI);
-            // 회원가입 경로면 필터를 건너뛰고 다음 필터로 넘어간다.
+            // 회원가입 경로면 필터를 건너뛰고 다음 필터로 넘어간다
             filterChain.doFilter(req, res);
             return;
         }

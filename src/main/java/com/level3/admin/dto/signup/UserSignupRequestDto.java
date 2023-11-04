@@ -29,12 +29,12 @@ public class UserSignupRequestDto {
             message = "비밀번호는 8~15자리면서 알파벳, 숫자, 특수문자를 포함해야합니다")
     private String password;
 
-    private String checkedPassword;
+    // private String checkedPassword;
 
     private DepartmentEnum department;
 
     @Builder.Default
-    private boolean isAdmin = false;
+    private boolean isAdmin = true;
 
     @Builder.Default
     private String adminToken = "";

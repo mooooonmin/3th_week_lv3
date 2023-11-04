@@ -91,7 +91,8 @@ public class JwtUtil {
         if(bearerToken != null) {
             return substringToken(bearerToken);
         }
-        return substringToken(bearerToken);
+        return null;
+        // return substringToken(bearerToken);
     }
 
     // 토큰 검증

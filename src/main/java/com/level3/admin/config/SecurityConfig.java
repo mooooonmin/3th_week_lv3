@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -19,7 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity // Spring Security 지원을 가능하게 함
-//@EnableGlobalMethodSecurity(securedEnabled = true) -> 이거달아놓으면 메서드에 @Secured("ROLE_ADMIN") 사용해서 접근권한 조정가능
+@EnableMethodSecurity(securedEnabled = true) //-> 이거달아놓으면 메서드에 @Secured("ROLE_ADMIN") 사용해서 접근권한 조정가능
 public class SecurityConfig {
 
     private final JwtUtil jwtUtil;
@@ -58,7 +58,7 @@ public class SecurityConfig {
         // 기본 설정인 Session 방식은 사용하지 않고 JWT 방식을 사용하기 위한 설정
         http.sessionManagement((sessionManagement) ->
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        )
+        );
 
                 //.antMatchers("/api/users/**").permitAll()
         http.authorizeHttpRequests((authorizeHttpRequests) ->
@@ -68,7 +68,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/user/login").permitAll() // 로그인까지 허용
                         .anyRequest().authenticated() // 그 외 모든 요청 인증 처리
         );
-
 
         // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
