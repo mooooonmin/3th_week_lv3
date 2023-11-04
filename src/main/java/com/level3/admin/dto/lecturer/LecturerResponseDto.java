@@ -1,8 +1,11 @@
 package com.level3.admin.dto.lecturer;
 
+import com.level3.admin.dto.lecture.LectureResponseDto;
 import com.level3.admin.entity.Lecturer;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,6 +16,7 @@ public class LecturerResponseDto {
     private String company;
     private String number;
     private String info;
+    private List<LectureResponseDto> lectures;
 
     public LecturerResponseDto(Lecturer lecturer) {
         this.id = lecturer.getId();

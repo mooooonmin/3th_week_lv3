@@ -32,6 +32,7 @@ public class LecturerController {
         return new ResponseEntity<>(lecturer, HttpStatus.OK);
     }
 
+    // 강사의 강의까지 조회
     @Secured({"ROLE_STAFF", "ROLE_MANAGER"})
     @GetMapping("/lecturers")
     public ResponseEntity<List<LecturerResponseDto>> getAllLecturers() {
