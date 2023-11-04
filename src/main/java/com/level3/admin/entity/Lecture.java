@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 
@@ -16,7 +17,10 @@ import java.time.LocalDate;
 public class Lecture {
 
     @Id
-    @Column(name = "title")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long lectureId;
+
+    @Column(name = "title", nullable = false, unique = true)
     private String title; // 강의명
 
     @Column(name = "price", nullable = false)
@@ -25,18 +29,13 @@ public class Lecture {
     @Column(name = "lecInfo")
     private String lecInfo; // 강의정보
 
-    @Column(name = "reg_date")
+    @Column(name = "reg_date", updatable = false)
+    @CreationTimestamp
     private LocalDate regDate; // 등록일
-
-    // TODO 다른 엔티티에서 가져와야하는 값
 
     @Column(name = "category")
     @Enumerated(EnumType.STRING)
     private LectureCategory category;
-
-    @Column(name = "user_role")
-    @Enumerated(EnumType.STRING)
-    private UserRoleEnum role;
 
     @ManyToOne // 강의(N) : 강사(1) = 한명의 강사는 다수의 강의 등록 가능
     @JoinColumn(name = "lecturer_name", nullable = false)
@@ -48,7 +47,6 @@ public class Lecture {
         this.lecInfo = requestDto.getLecInfo();
         this.regDate = LocalDate.now();
         this.category = requestDto.getCategory();
-        this.role = requestDto.getRole();
         this.lecturer = lecturer;
     }
 }

@@ -14,6 +14,5 @@ public class LectureRequestDto {
     private int price;
     private String lecInfo;
     private LectureCategory category;
-    private UserRoleEnum role;
     private String lecturerName;
 }
