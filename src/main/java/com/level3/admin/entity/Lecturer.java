@@ -4,13 +4,9 @@ import com.level3.admin.dto.lecturer.LecturerRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
-@Table(name = "Lecturer")
+@Table(name = "lecturer")
 @Entity
 @NoArgsConstructor
 public class Lecturer {
@@ -34,9 +30,9 @@ public class Lecturer {
     @Column(name = "info", nullable = false)
     private String info; // 강사소개
 
-    // TODO 다른 엔티티에서 가져와야하는 값
-    @OneToMany(mappedBy = "lecturer") // 강사의 해당강의를 조회할 수 있게 해줌
-    private List<Lecture> lectures = new ArrayList<>();
+    // 강의 - 강사 단방향 설정을 위해 일단 여기서는 삭제
+//    @OneToMany(mappedBy = "lecturer") // 강사의 해당강의를 조회할 수 있게 해줌
+//    private List<Lecture> lectures = new ArrayList<>();
 
     public Lecturer(LecturerRequestDto requestDto) {
         this.name = requestDto.getName();

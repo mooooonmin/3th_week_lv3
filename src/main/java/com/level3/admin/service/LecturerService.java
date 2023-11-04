@@ -3,64 +3,62 @@ package com.level3.admin.service;
 import com.level3.admin.dto.lecturer.LecturerRequestDto;
 import com.level3.admin.dto.lecturer.LecturerResponseDto;
 import com.level3.admin.entity.Lecturer;
-import com.level3.admin.entity.UserRoleEnum;
-import com.level3.admin.jwt.JwtUtil;
 import com.level3.admin.repository.LecturerRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class LecturerService {
 
     private final LecturerRepository lecturerRepository;
-    private JwtUtil jwtUtil;
-
-    @Autowired
-    public LecturerService(LecturerRepository lecturerRepository, JwtUtil jwtUtil) {
-        this.lecturerRepository = lecturerRepository;
-        this.jwtUtil = jwtUtil;
-
-    }
 
     // 강사 등록 (매니저와 스태프 모두 가능)
-    public LecturerResponseDto createLecturer(HttpServletRequest request, LecturerRequestDto requestDto) {
-        // 토큰에서 사용자의 권한을 가져옴
-        String token = jwtUtil.getTokenFromRequest(request);
-        UserRoleEnum role = jwtUtil.getUserRoleFromToken(token);
-
-        // 사용자의 권한이 매니저 또는 스태프인지 확인
-        if (role.equals(UserRoleEnum.MANAGER) || role.equals(UserRoleEnum.STAFF)) {
-            Lecturer lecturer = new Lecturer(requestDto);
-            lecturerRepository.save(lecturer);
-            return new LecturerResponseDto(lecturer);
-        } else {
-            throw new RuntimeException("매니저 또는 스태프만 강사를 등록할 수 있습니다");
-        }
+    public LecturerResponseDto createLecturer(LecturerRequestDto requestDto) {
+        Lecturer lecturer = new Lecturer(requestDto);
+        lecturerRepository.save(lecturer);
+        return new LecturerResponseDto(lecturer);
     }
 
-    // 매니저 권한만 선택 강사 수정 가능
+    // 선택한 강사 정보 조회
+    public LecturerResponseDto getLecturerById(Long id) {
+        Lecturer lecturer = lecturerRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("해당 강사 정보를 찾을 수 없습니다"));
+        return new LecturerResponseDto(lecturer);
+    }
+
+    // 전체 강사 정보 조회
+    public List<LecturerResponseDto> getAllLecturers() {
+        List<Lecturer> lecturers = lecturerRepository.findAll();
+        return lecturers.stream()
+                .map(LecturerResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    // (매니저) 선택 강사 수정
     @Transactional
-    public void updateLecturer(HttpServletRequest request, Long id, LecturerRequestDto requestDto) {
-        // 토큰에서 사용자의 권한을 가져옴
-        String token = jwtUtil.getTokenFromRequest(request);
-        UserRoleEnum role = jwtUtil.getUserRoleFromToken(token);
+    public void updateLecturer(Long id, LecturerRequestDto requestDto) {
+        // 강사 정보 찾고 수정 - 강사 아이디로 찾기
+        Lecturer lecturer = lecturerRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("해당 강사 정보를 찾을 수 없습니다"));
 
-        // 사용자의 권한이 매니저인지 확인
-        if (role.equals(UserRoleEnum.MANAGER)) {
-            // 강사 정보 찾고 수정 - 강사 아이디로 찾기
-            Lecturer lecturer = lecturerRepository.findById(id)
-                    .orElseThrow(() -> new NoSuchElementException("해당 강사 정보를 찾을 수 없습니다"));
-
-            lecturer.update(requestDto);
-            lecturerRepository.save(lecturer);
-        } else {
-            throw new RuntimeException("매니저만 강사 정보 수정이 가능합니다");
-        }
+        lecturer.update(requestDto);
+        lecturerRepository.save(lecturer);
     }
 
-    // TODO 선택강사 삭제
+    // (매니저) 선택 강사 삭제
+    @Transactional
+    public void deleteLecturer(Long id) {
+        // 강사 정보가 있는지 확인
+        if (!lecturerRepository.existsById(id)) {
+            throw new NoSuchElementException("해당 강사 정보를 찾을 수 없습니다");
+        }
+        // 강사 정보 삭제
+        lecturerRepository.deleteById(id);
+    }
 }
