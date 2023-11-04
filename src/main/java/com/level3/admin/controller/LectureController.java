@@ -2,8 +2,6 @@ package com.level3.admin.controller;
 
 import com.level3.admin.dto.lecture.LectureRequestDto;
 import com.level3.admin.dto.lecture.LectureResponseDto;
-import com.level3.admin.dto.lecturer.LecturerRequestDto;
-import com.level3.admin.dto.lecturer.LecturerResponseDto;
 import com.level3.admin.entity.LectureCategory;
 import com.level3.admin.entity.Lecturer;
 import com.level3.admin.repository.LecturerRepository;
@@ -26,10 +24,10 @@ public class LectureController {
 
     // TODO 강의 등록
     @Secured({"ROLE_STAFF", "ROLE_MANAGER"})
-    @PostMapping
+    @PostMapping("/lecture")
     public ResponseEntity<LectureResponseDto> createLecture(@RequestBody LectureRequestDto requestDto,
-                                                            @RequestParam String name) {
-        Lecturer lecturer = lecturerRepository.findByName(name)
+                                                            @RequestParam String lecturerName) {
+        Lecturer lecturer = lecturerRepository.findByName(lecturerName)
                 .orElseThrow(() -> new IllegalArgumentException("해당 강사가 없습니다"));
 
         LectureResponseDto responseDto = lectureService.createLecture(requestDto, lecturer);
