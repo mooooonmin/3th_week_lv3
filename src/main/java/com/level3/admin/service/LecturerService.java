@@ -19,14 +19,15 @@ public class LecturerService {
     private final LecturerRepository lecturerRepository;
 
     // 강사 등록 (매니저와 스태프 모두 가능)
+    @Transactional
     public LecturerResponseDto createLecturer(LecturerRequestDto requestDto) {
-        System.out.println("Service: Creating lecturer. Request Data: " + requestDto);
         Lecturer lecturer = new Lecturer(requestDto);
         lecturerRepository.save(lecturer);
         return new LecturerResponseDto(lecturer);
     }
 
     // 선택한 강사 정보 조회
+    @Transactional(readOnly = true)
     public LecturerResponseDto getLecturerById(Long id) {
         Lecturer lecturer = lecturerRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("해당 강사 정보를 찾을 수 없습니다"));
@@ -34,6 +35,7 @@ public class LecturerService {
     }
 
     // 전체 강사 정보 조회
+    @Transactional(readOnly = true)
     public List<LecturerResponseDto> getAllLecturers() {
         List<Lecturer> lecturers = lecturerRepository.findAll();
         return lecturers.stream()

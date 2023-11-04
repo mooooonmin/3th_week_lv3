@@ -1,6 +1,7 @@
 package com.level3.admin.entity;
 
 import com.level3.admin.dto.lecture.LectureRequestDto;
+import com.level3.admin.dto.lecture.LectureResponseDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,8 +46,14 @@ public class Lecture {
         this.title = requestDto.getTitle();
         this.price = requestDto.getPrice();
         this.lecInfo = requestDto.getLecInfo();
-        this.regDate = LocalDate.now();
         this.category = requestDto.getCategory();
         this.lecturer = lecturer;
+    }
+
+    public void update(LectureRequestDto requestDto) {
+        this.title = requestDto.getTitle();
+        this.price = requestDto.getPrice();
+        this.lecInfo = requestDto.getLecInfo();
+        this.category = requestDto.getCategory();
     }
 }
