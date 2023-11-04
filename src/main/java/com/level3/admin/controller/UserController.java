@@ -10,10 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
@@ -30,7 +27,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
-    @PostMapping("/login")
+    @PutMapping("/login")
     public ResponseEntity<UserLoginResponseDto> login(@Valid @RequestBody UserLoginRequestDto requestDto) throws Exception {
         UserLoginResponseDto responseDto = userServiceImpl.login(requestDto);
         return ResponseEntity.ok(responseDto);
