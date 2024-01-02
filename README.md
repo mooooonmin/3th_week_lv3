@@ -1,6 +1,4 @@
 # 3th_week_lv3
-## UseCase
-![2023-11-05_00-31-45](https://github.com/mooooonmin/3th_week_lv3/assets/118891828/084e969c-d777-4fa2-9945-500d7d7b12aa)
 ---
 ## API
 - Swagger : http://localhost:8080/swagger-ui/index.html
