@@ -3,6 +3,10 @@
 ![2023-11-05_00-31-45](https://github.com/mooooonmin/3th_week_lv3/assets/118891828/084e969c-d777-4fa2-9945-500d7d7b12aa)
 ---
 ## API
+- Swagger : http://localhost:8080/swagger-ui/index.html
+![2024-01-02_15-15-17](https://github.com/mooooonmin/3th_week_lv3/assets/118891828/d6d53ff8-1260-4994-8a9c-59524edd8c81)
+![2024-01-02_15-15-25](https://github.com/mooooonmin/3th_week_lv3/assets/118891828/a46308e4-d367-4882-8528-bed203771f82)
+![2024-01-02_15-15-34](https://github.com/mooooonmin/3th_week_lv3/assets/118891828/f8b974d1-1a96-4306-86d4-6e56433c7cf7)
 ---
 ## ERD
 ---
