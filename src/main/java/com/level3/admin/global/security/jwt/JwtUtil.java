@@ -85,7 +85,6 @@ public class JwtUtil {
 
     // JWT 토큰 substring
     public String substringToken(String tokenValue) {
-        //StringUtils.hasText(tokenValue) ==> 공백인지 null 인지 체크
         if (StringUtils.hasText(tokenValue) && tokenValue.startsWith(BEARER_PREFIX)) {
             return tokenValue.substring(7);
         }
